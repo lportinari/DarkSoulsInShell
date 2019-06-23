@@ -268,7 +268,6 @@ def battle_interface(enemy):
 | Vida: {}   | Mana: {}  | Qtd Estus: {} |
 ------------------------------------------
   
-
 [ 1 ] ATACAR
 [ 2 ] ESTUS FLASK
 [ 3 ] FUGIR
@@ -417,10 +416,6 @@ hero.equipWeapom(straight_sword_hilt)
 
 
 battle_interface(asylum_demon)
-
-
-
-
 
 
 #print(hero.__dict__)
