@@ -1,8 +1,11 @@
 from time import sleep
+import random
+import math
 
 class Class:
-    def __init__(self, name='', phyAttack=1, magAttack=1, phyDef=1, magDef=1, criticalChance=1, 
-        hp=1, mp=1, souls=0, level=0, weapom='', shield='', estus_flask=2, class_name=''):
+    def __init__(self, name='', phyAttack=0,max_phy_attack=0, magAttack=0, max_mag_attack=0, 
+        phyDef=0, magDef=0, criticalChance=0, hp=0, mp=0, souls=0, level=0, weapom='', 
+        shield='', estus_flask=2, class_name=''):
         self.phyAttack = phyAttack
         self.magAttack = magAttack
         self.phyDef = phyDef
@@ -14,6 +17,8 @@ class Class:
         self.criticalChance = criticalChance
         self.estus_flask = estus_flask
         self.class_name = class_name
+        self.max_phy_attack = max_phy_attack
+        self.max_mag_attack = max_mag_attack
 
     def createCharacter(self):
         print('-' * 60)
@@ -36,6 +41,7 @@ class Class:
     8 - DEPRIVED
     
     """)
+
         while True:
             select = int(input('Digite o número da classe escolhida: '))
             
@@ -46,15 +52,16 @@ class Class:
                 break
 
 
-
         #Classe Warrior
         if select == 1:
             hero.class_name = 'Warrior'
             hero.phyAttack = 13
-            hero.magAttack = 9
+            hero.max_phy_attack = 23
+            hero.magAttack = 7
+            hero.max_mag_attack = 17
             hero.phyDef = 12
             hero.magDef = 8
-            hero.criticalChance = 13
+            hero.criticalChance = 5
             hero.hp = 110
             hero.mp = 50
             hero.souls = 0
@@ -63,10 +70,12 @@ class Class:
         elif select == 2:
             hero.class_name = 'Knight'
             hero.phyAttack = 11
-            hero.magAttack = 9
+            hero.max_phy_attack = 21
+            hero.magAttack = 8
+            hero.max_mag_attack = 18
             hero.phyDef = 10
             hero.magDef = 10
-            hero.criticalChance = 11
+            hero.criticalChance = 5
             hero.hp = 140
             hero.mp = 50
             hero.souls = 0
@@ -75,10 +84,12 @@ class Class:
         elif select == 3:
             hero.class_name = 'Thief'
             hero.phyAttack = 9
-            hero.magAttack = 12
+            hero.max_phy_attack = 19
+            hero.magAttack = 8
+            hero.max_mag_attack = 18
             hero.phyDef = 9
             hero.magDef = 11
-            hero.criticalChance = 15
+            hero.criticalChance = 10
             hero.hp = 90
             hero.mp = 11
             hero.souls = 0
@@ -87,9 +98,12 @@ class Class:
         elif select == 4:
             hero.class_name = 'Bandit'
             hero.phyAttack = 14
+            hero.max_phy_attack = 24
             hero.magAttack = 10
-            hero.phyDef = 14
+            hero.max_mag_attack = 20
+            hero.phyDef = 10
             hero.magDef = 8
+            hero.criticalChance = 8
             hero.hp = 120
             hero.mp = 50
             hero.souls = 0
@@ -98,9 +112,12 @@ class Class:
         elif select == 5:
             hero.class_name = 'Hunter'
             hero.phyAttack = 12
+            hero.max_phy_attack = 22
             hero.magAttack = 9
+            hero.max_mag_attack = 19
             hero.phyDef = 11
             hero.magDef = 9
+            hero.criticalChance = 9
             hero.hp = 11
             hero.mp = 50
             hero.souls = 0
@@ -109,9 +126,12 @@ class Class:
         elif select == 6:
             hero.class_name = 'Sorcerer'
             hero.phyAttack = 9
+            hero.max_phy_attack = 19
             hero.magAttack = 15
+            hero.max_mag_attack = 25
             hero.phyDef = 8
             hero.magDef = 15
+            hero.criticalChance = 5
             hero.hp = 80
             hero.mp = 100
             hero.souls = 0
@@ -119,10 +139,13 @@ class Class:
         #Classe Pyromancer
         elif select == 7:
             hero.class_name = 'Pyromancer'
-            hero.phyAttack = 12
+            hero.phyAttack = 10
+            hero.max_phy_attack = 20
             hero.magAttack = 12
+            hero.max_mag_attack = 22
             hero.phyDef = 11
             hero.magDef = 10
+            hero.criticalChance = 5
             hero.hp = 100
             hero.mp = 80
             hero.souls = 0
@@ -130,10 +153,13 @@ class Class:
         #Classe Deprived
         elif select == 8:
             hero.class_name = 'Deprived'
-            hero.phyAttack = 11
-            hero.magAttack = 11
-            hero.phyDef = 11
-            hero.magDef = 11
+            hero.phyAttack = 10
+            hero.max_phy_attack = 20
+            hero.magAttack = 10
+            hero.max_mag_attack = 20
+            hero.phyDef = 10
+            hero.magDef = 10
+            hero.criticalChance = 5
             hero.hp = 110
             hero.mp = 50
             hero.souls = 0
@@ -144,13 +170,15 @@ class Class:
 Atributos da Classe:
     
     Classe: {}
-    Ataque Físico: {}
-    Ataque Mágico: {}
+    Ataque Físico: {}/{}
+    Ataque Mágico: {}/{}
     Defesa Física: {}
     Defesa Mágica: {}
+    Chance Crítica: {}%
     HP: {}
     MP: {}
-    '''.format(hero.class_name, hero.phyAttack, hero.magAttack, hero.phyDef, hero.magDef, hero.hp, hero.mp))
+    '''.format(hero.class_name, hero.phyAttack, hero.max_phy_attack, hero.magAttack, 
+        hero.max_mag_attack, hero.phyDef, hero.magDef, hero.criticalChance, hero.hp, hero.mp))
 
         print('''
 [ 1 ] CONFIRMAR A ESCOLHA
@@ -164,25 +192,37 @@ Atributos da Classe:
         elif choose == 2:
             hero.choseClass()
 
-    def equipWeapom(self, other):
+    def equipWeapon(self, other):
         self.phyAttack += other.phyAttack
+        self.max_phy_attack += other.max_phy_attack
         self.magAttack += other.magAttack
+        self.max_mag_attack += other.max_mag_attack
+        self.criticalChance += other.critical_chance
         self.weapom = other.name
+        print('Você equipou {}!'.format(other.name))
 
 
 class Equips:
-    def __init__(self, name='', phyAttack=0, magAttack=0):
+    def __init__(self, ID, name='', phyAttack=0, max_phy_attack=0, magAttack=0, 
+        max_mag_attack=0, critical_chance=0, price=0):
+        self.ID = ID
         self.name = name
         self.phyAttack = phyAttack
+        self.max_phy_attack = max_phy_attack
         self.magAttack = magAttack
+        self.max_mag_attack = max_mag_attack
+        self.critical_chance = critical_chance
+        self.price = price
 
 
 class Monster:
-    def __init__(self, name='', phyAttack=50, magAttack=65, phyDef=40, magDef=35, 
-        hp=500, mp=100, souls=50):
+    def __init__(self, name='', phyAttack=50, max_phy_attack=60, magAttack=65, max_mag_attack=75, 
+        phyDef=40, magDef=35, hp=500, mp=100, souls=50):
         self.name = name
         self.phyAttack = phyAttack
+        self.max_phy_attack = max_phy_attack
         self.magAttack = magAttack
+        self.max_mag_attack = max_mag_attack
         self.phyDef = phyDef
         self.magDef = magDef
         self.hp = hp
@@ -190,8 +230,11 @@ class Monster:
         self.souls = souls
 
     def attack(self, other):
-        dano = self.phyAttack - other.phyDef
+        #dano = self.phyAttack - other.phyDef
+        dano = random.randint(self.phyAttack, self.max_phy_attack) - other.phyDef
         other.hp -= dano
+
+        sleep(1)
         if other.hp <= 0:
             print('{}:'.format(self.name))
             print('Você recebeu {} de dano!'.format(dano))
@@ -199,7 +242,7 @@ class Monster:
         else:
             print('{}:'.format(self.name))
             print('Você recebeu {} de dano!'.format(dano))
-        dano = 0
+        #dano = 0
 
     def magic(self, other):
         pass
@@ -214,31 +257,48 @@ class Hero(Class):
     def createCharacter(self):
         super(Hero, self).createCharacter()
 
+
     def choseClass(self):
         super(Hero, self).choseClass()
 
+
     def attack(self, other):
-        dano = self.phyAttack - other.phyDef
+        dano = random.randint(self.phyAttack, self.max_phy_attack) - other.phyDef
+
+        hero.critChance()
+        if crit:
+            dano *= 2
+
         other.hp -= dano
 
-        print('STATUS DA BATALHA:\n')
+        sleep(1)
+        print('STATUS DA BATALHA:')
+        print('------------------\n')
+
         if other.hp <= 0:
             print('{}:'.format(self.name))
             other.hp = 0
             hero.souls += other.souls
+            if crit:
+                print('ATAQUE CRÍTICO!')
+            print('Você causou {} de dano no inimigo\n'.format(dano))
             print('Parabéns, você derrotou {}!'.format(other.name))
             print('Você adquiriu {} souls'.format(other.souls))
 
         else:
             print('{}:'.format(self.name))
+            if crit:
+                print('ATAQUE CRÍTICO!')
             print('Você causou {} de dano no inimigo'.format(dano))
             print('HP {}: {}\n'.format(other.name, other.hp))
+
 
     def estusFlask(self):
         if self.estus_flask > 0:
             self.estus_flask -= 1
             self.hp += 100
 
+            sleep(0.5)
             if self.hp > max_hp:
                 self.hp = max_hp
             print('Você recuperou 100 pontos de vida!\n'.format(self.estus_flask))
@@ -246,10 +306,65 @@ class Hero(Class):
         else:
             print('Você não possui Estus Flask!')
 
+
     def magic(self, other):
         pass
 
 
+    def critChance(self):
+        global crit 
+
+        crit = False
+        critical = random.randint(0, 100)
+
+        if critical <= self.criticalChance:
+            crit = True
+            return crit
+
+
+class Store:
+    def __init__(self, swords, shields):
+        self.swords = swords
+
+    def weaponStore(self):
+        print('-=' * 15)
+        print('Espadas'.center(30))
+        print('-=' * 15)
+
+        for i in self.swords:
+            print('''
+Código de compra: {}
+Nome: {}
+Ataque físico: {}/{}
+Ataque mágico: {}/{}
+Chance Crítica: {}%
+Preço: {} Souls'''.format(i.ID, i.name, i.phyAttack, i.max_phy_attack, i.magAttack, 
+    i.max_mag_attack, i.critical_chance, i.price))
+
+            print('-' * 25)
+
+        buy = int(input('Digite o código de compra ou 0 para voltar: '))
+        if buy == 0:
+            pass
+        else:
+            check = int(input('''
+                
+                |[1 - CONFIRMAR]| |[2 - CANCELAR]|
+                
+                Escolha uma opção: '''))
+            
+            if check == 1:
+                if buy == 1:
+                    hero.equipWeapon(broken_straight_sword)
+                elif buy == 2:
+                    hero.equipWeapon(straight_sword)
+                elif buy == 3:
+                    hero.equipWeapon(bastard_sword)
+                elif buy == 4:
+                    hero.equipWeapon(straight_sword_hilt)
+
+
+# Menu de batalha
 def battle_interface(enemy):
     global max_hp
 
@@ -262,15 +377,19 @@ def battle_interface(enemy):
         if turn == 1:
             max_hp = hero.hp
 
+       	sleep(1)
         print('-' * 50)
         choice = int(input("""
 ------------------------------------------
 | Vida: {}   | Mana: {}  | Qtd Estus: {} |
 ------------------------------------------
   
-[ 1 ] ATACAR
-[ 2 ] ESTUS FLASK
-[ 3 ] FUGIR
+
+ -======================-
+ *[ 1 ] ATACAR          *
+ *[ 2 ] ESTUS FLASK     *
+ *[ 3 ] FUGIR           *
+ -======================-
 
 Escolha uma opção: """.format(hero.hp, hero.mp, hero.estus_flask)))
         print('-' * 50)
@@ -302,19 +421,24 @@ Escolha uma opção: """.format(hero.hp, hero.mp, hero.estus_flask)))
 #_________________|
 
 #Swords:
-broken_straight_sword = Equips('Broken Straight Sword', 10)
-straight_sword = Equips('Straight Sword', 20)
-bastard_sword = Equips('Bastard Sword', 30)
-straight_sword_hilt = Equips('Straight Sword Hilt', 40)
+#ID, name='', phyAttack=0, max_phy_attack=0, magAttack=0, max_mag_attack=0, critical_chance=0, price=0)
+broken_straight_sword = Equips(1, 'Broken Straight Sword', 10, 15, 0, 0, 0, 200)
+straight_sword = Equips(2, 'Straight Sword', 20, 25, 0, 0, 5, 500)
+bastard_sword = Equips(3, 'Bastard Sword', 30, 37, 0, 0, 5, 1500)
+straight_sword_hilt = Equips(4, 'Straight Sword Hilt', 40, 50, 0, 0, 10, 2000)
+
+#Lista dos objetos swords que suprirá a loja
+swords = [broken_straight_sword, straight_sword, bastard_sword, straight_sword_hilt]
 
 #Great Swords:
 
 #-------------------------------------------------------------------------------------------
 #Objects: BOSSES  |
 #_________________|
-#name, phyAttack=50, magAttack=65, phyDef=40, magDef=35, hp=500, mp=100, souls=50
+#name='', phyAttack=50, max_phy_attack=60, magAttack=65, max_mag_attack=75, phyDef=40, 
+#magDef=35, hp=500, mp=100, souls=50
 
-asylum_demon = Monster('Asylum Demon', 25, 0, 15, 30, 300, 100, 500)
+asylum_demon = Monster('Asylum Demon', 25, 35, 0, 0, 15, 30, 300, 100, 500)
 
 
 #-------------------------------------------------------------------------------------------
@@ -404,6 +528,7 @@ print("""
 
 
 hero = Hero()
+store = Store(swords, [])
 
 #Escolher o nome do personagem
 hero.createCharacter()
@@ -411,11 +536,35 @@ hero.createCharacter()
 #Escolher a classe do personagem
 hero.choseClass()
 
-#Equipando a arma
-hero.equipWeapom(straight_sword_hilt)
 
+#Equipando a arma
+#hero.equipWeapom(straight_sword_hilt)
+
+
+store.weaponStore()
 
 battle_interface(asylum_demon)
+
+
+
+#Reaproveitar código
+'''
+
+Atributos da Classe:
+    
+(Status player)
+
+    Classe: {}
+    Ataque Físico: {}
+    Ataque Mágico: {}
+    Defesa Física: {}
+    Defesa Mágica: {}
+    HP: {}
+    MP: {}
+    .format(hero.class_name, hero.phyAttack, hero.magAttack, hero.phyDef, hero.magDef, hero.hp, hero.mp))
+'''
+
+
 
 
 #print(hero.__dict__)
