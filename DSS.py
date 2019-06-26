@@ -230,7 +230,7 @@ class Monster:
         self.souls = souls
 
     def attack(self, other):
-        #dano = self.phyAttack - other.phyDef
+
         dano = random.randint(self.phyAttack, self.max_phy_attack) - other.phyDef
         other.hp -= dano
 
@@ -323,50 +323,127 @@ class Hero(Class):
 
 
 class Store:
-    def __init__(self, swords, shields):
-        self.swords = swords
+    def __init__(self, one_handed_swords, two_handed_greatsword):
+        self.one_handed_swords = one_handed_swords
+        self.two_handed_greatsword = two_handed_greatsword
 
     def weaponStore(self):
-        print('-=' * 15)
-        print('Espadas'.center(30))
-        print('-=' * 15)
 
-        for i in self.swords:
-            print('''
-Código de compra: {}
-Nome: {}
-Ataque físico: {}/{}
-Ataque mágico: {}/{}
-Chance Crítica: {}%
-Preço: {} Souls'''.format(i.ID, i.name, i.phyAttack, i.max_phy_attack, i.magAttack, 
-    i.max_mag_attack, i.critical_chance, i.price))
+        print('''
 
-            print('-' * 25)
+        (
+ 
+           )                                                                           
+   
+         ( _   _._
+          |_|-'_~_`-._
+       _.-'-_~_-~_-~-_`-._
+   _.-'_~-_~-_-~-_~_~-_~-_`-._
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |  []  []   []   []  [] |
+    |           __    ___   |          
+  ._|  []  []  | .|  [___]  |_._._._._._._._._._._._._._._._._.  
+  |=|________()|__|()_______|=|=|=|=|=|=|=|=|=|=|=|=|=|=|=|=|=|  
+^^^^^^^^^^^^^^^ === ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^       
+    _______      ===   
+   <_Loja_>       === 
+      ^|^             ===
+       |                 ===
 
-        buy = int(input('Digite o código de compra ou 0 para voltar: '))
-        if buy == 0:
-            pass
-        else:
-            check = int(input('''
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+*    [ 1 ] ESPADAS DE UMA MÃO         *
+*    [ 2 ] ESPADAS DE DUAS MÃOS       *
+*    [ 3 ] ESCUDOS                    *
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-  
+
+    O que deseja comprar?  
+    ''')
+       
+        option = int(input('Escolha uma opção: '))
+
+        if option == 1:
+
+            print('-=' * 49)
+            print('ESPADAS DE UMA MÃO'.center(98))
+            print('Para guerreiros que além de focar em ataque físico, pretendem focar na defesa. PRÓS: Pode ser equipado em conjunto com escudo / CONTRAS: Ataque mediano')
+            print('-=' * 49)
+
+            for i in self.one_handed_swords:
+                print('''
+--------------------------------------------------------------------------------------------------
+!Nome: {} | Ataque físico: {}/{} | Ataque mágico: {}/{} | Chance Crítica: {}%                    
+!Preço: {} Souls | Código de compra: {}                                                          
+--------------------------------------------------------------------------------------------------'''.format(i.name, i.phyAttack, i.max_phy_attack, i.magAttack, i.max_mag_attack, 
+    i.critical_chance, i.price, i.ID))
+
+            print()
+            buy = int(input('Digite o código de compra ou 0 para voltar: '))
+            if buy == 0:
+                pass
+            else:
+                check = int(input('''
+                    
+                    |[1 - CONFIRMAR]| |[2 - CANCELAR]|
+                    
+                    Escolha uma opção: '''))
                 
-                |[1 - CONFIRMAR]| |[2 - CANCELAR]|
+                if check == 1:
+                    if buy == 1:
+                        hero.equipWeapon(broken_straight_sword)
+                    elif buy == 2:
+                        hero.equipWeapon(straight_sword)
+                    elif buy == 3:
+                        hero.equipWeapon(bastard_sword)
+                    elif buy == 4:
+                        hero.equipWeapon(straight_sword_hilt)
+
+                else:
+                    store.weaponStore()
+
+        elif option == 2:
+
+            print('-=' * 49)
+            print('ESPADAS DE DUAS MÃOS'.center(98))
+            print('Perfeita para guerreiros que querem focar em ataque físico. PRÓS: Ataque físico anto / CONTRAS: Não pode usar em conjunto de escudos.')
+            print('-=' * 49)
+
+            for i in self.two_handed_greatsword:
+                print('''
+--------------------------------------------------------------------------------------------------
+!Nome: {} | Ataque físico: {}/{} | Ataque mágico: {}/{} | Chance Crítica: {}%                    
+!Preço: {} Souls | Código de compra: {}                                                          
+--------------------------------------------------------------------------------------------------'''.format(i.name, i.phyAttack, i.max_phy_attack, i.magAttack, i.max_mag_attack, 
+    i.critical_chance, i.price, i.ID))
+
+            print()
+            buy = int(input('Digite o código de compra ou 0 para voltar: '))
+            if buy == 0:
+                pass
+            else:
+                check = int(input('''
+                    
+                    |[1 - CONFIRMAR]| |[2 - CANCELAR]|
+                    
+                    Escolha uma opção: '''))
                 
-                Escolha uma opção: '''))
-            
-            if check == 1:
-                if buy == 1:
-                    hero.equipWeapon(broken_straight_sword)
-                elif buy == 2:
-                    hero.equipWeapon(straight_sword)
-                elif buy == 3:
-                    hero.equipWeapon(bastard_sword)
-                elif buy == 4:
-                    hero.equipWeapon(straight_sword_hilt)
+                if check == 1:
+                    if buy == 5:
+                        hero.equipWeapon(flamberge)
+                    elif buy == 6:
+                        hero.equipWeapon(claymore)
+                    elif buy == 7:
+                        hero.equipWeapon(stone_greatsword)
+                    elif buy == 8:
+                        hero.equipWeapon(greatlord_greatsword)
+
+                else:
+                    store.weaponStore()
 
 
 # Menu de batalha
 def battle_interface(enemy):
-    global max_hp
+    global max_hp, battle_result 
+    battle_result = None
 
     #Numero de rodadas por batalha
     turn = 0
@@ -377,7 +454,7 @@ def battle_interface(enemy):
         if turn == 1:
             max_hp = hero.hp
 
-       	sleep(1)
+        sleep(1)
         print('-' * 50)
         choice = int(input("""
 ------------------------------------------
@@ -397,7 +474,9 @@ Escolha uma opção: """.format(hero.hp, hero.mp, hero.estus_flask)))
         if choice == 1:
             hero.attack(enemy)
             if enemy.hp <= 0:
-                break
+                battle_result = True
+
+                return battle_result
 
         elif choice == 2:
             hero.estusFlask()
@@ -412,7 +491,9 @@ Escolha uma opção: """.format(hero.hp, hero.mp, hero.estus_flask)))
 
         if hero.hp <= 0:
             print('Você foi derrotado!')
-            break
+            battle_result = False
+
+            return battle_result
 
 
 
@@ -426,11 +507,18 @@ broken_straight_sword = Equips(1, 'Broken Straight Sword', 10, 15, 0, 0, 0, 200)
 straight_sword = Equips(2, 'Straight Sword', 20, 25, 0, 0, 5, 500)
 bastard_sword = Equips(3, 'Bastard Sword', 30, 37, 0, 0, 5, 1500)
 straight_sword_hilt = Equips(4, 'Straight Sword Hilt', 40, 50, 0, 0, 10, 2000)
-
 #Lista dos objetos swords que suprirá a loja
-swords = [broken_straight_sword, straight_sword, bastard_sword, straight_sword_hilt]
+one_handed_swords = [broken_straight_sword, straight_sword, bastard_sword, straight_sword_hilt]
 
-#Great Swords:
+#Greatswords:
+flamberge = Equips(5, 'Flamberge', 18, 23, 0, 0, 0, 500)
+claymore = Equips(6, 'Claymore', 27, 33, 0, 0, 5, 1000)
+stone_greatsword = Equips(7, 'Stone Greatsword', 35, 45, 0, 0, 0, 1750)
+greatlord_greatsword = Equips(8, 'Great Lord Greatsword', 50, 60, 0, 0, 5, 3000)
+#Lista dos objetos greatswords que suprirá a loja
+two_handed_greatsword = [flamberge, claymore, stone_greatsword, greatlord_greatsword]
+
+
 
 #-------------------------------------------------------------------------------------------
 #Objects: BOSSES  |
@@ -439,6 +527,7 @@ swords = [broken_straight_sword, straight_sword, bastard_sword, straight_sword_h
 #magDef=35, hp=500, mp=100, souls=50
 
 asylum_demon = Monster('Asylum Demon', 25, 35, 0, 0, 15, 30, 300, 100, 500)
+bell_gargoyle = Monster('Bell Gargoyle', 30, 40, 25, 35, 35, 40, 500, 100, 750)
 
 
 #-------------------------------------------------------------------------------------------
@@ -528,7 +617,7 @@ print("""
 
 
 hero = Hero()
-store = Store(swords, [])
+store = Store(one_handed_swords, two_handed_greatsword)
 
 #Escolher o nome do personagem
 hero.createCharacter()
@@ -545,33 +634,7 @@ store.weaponStore()
 
 battle_interface(asylum_demon)
 
-
-
-#Reaproveitar código
-'''
-
-Atributos da Classe:
-    
-(Status player)
-
-    Classe: {}
-    Ataque Físico: {}
-    Ataque Mágico: {}
-    Defesa Física: {}
-    Defesa Mágica: {}
-    HP: {}
-    MP: {}
-    .format(hero.class_name, hero.phyAttack, hero.magAttack, hero.phyDef, hero.magDef, hero.hp, hero.mp))
-'''
-
-
-
-
-#print(hero.__dict__)
-
-
-
-
-
-
+print('-=' * 20)
+if battle_result:
+    print('Parabéns, você acaba de derrotar o Asylum Demon!')
 
