@@ -357,8 +357,6 @@ class Hero(Class):
                 print('HP {}: {}\n'.format(other.name, other.hp))
 
 
-
-
     def critChance(self):
         global crit 
 
@@ -370,6 +368,22 @@ class Hero(Class):
             return crit
 
 
+    def levelUp(self):
+
+        print('-=' * 30)
+        print('Para upar de level é necessário uma taxa de "Souls", a taxa aumenta a cada level adquirido.')
+        print('-=' * 30)
+
+        print('''
+---------------           --------------
+Level Up: {}  |           | Souls: {}  |   
+---------------           --------------
+
+
+            '''.format())
+
+
+
 class Store:
     def __init__(self, one_handed_swords, two_handed_greatsword, spells_list):
         self.one_handed_swords = one_handed_swords
@@ -378,12 +392,14 @@ class Store:
 
     def weaponStore(self):
 
-        print('''
-
-        (
- 
-           )                                                                           
-   
+        print('''                 
+                                 _            _       
+                                | |          (_)      
+                                | |      ___  _  ____ 
+         (                      | |     / _ \\| |/ _  |
+                                | |____| |_| | ( ( | |
+            )                   |_______)___/| |\\_||_|
+                                           (__/                                             
          ( _   _._
           |_|-'_~_`-._
        _.-'-_~_-~_-~-_`-._
@@ -415,6 +431,14 @@ class Store:
         if option == 1:
 
             print('''
+
+                               _                     _          _                              _ 
+                              | |                   | |        | |                            | |
+          ___  ____   ____ ___| | _   ____ ____   _ | | ____ _ | |    ___ _ _ _  ___   ____ _ | |
+         / _ \\|  _ \\ / _  |___) || \\ / _  |  _ \\ / || |/ _  ) || |   /___) | | |/ _ \\ / ___) || |
+        | |_| | | | ( (/ /    | | | ( ( | | | | ( (_| ( (/ ( (_| |  |___ | | | | |_| | |  ( (_| |
+         \\___/|_| |_|\\____)   |_| |_|\\_||_|_| |_|\\____|\\____)____|  (___/ \\____|\\___/|_|   \\____|
+         
                                   /)
                                  //
                         .-------| |--------------------------------------------.__
@@ -521,6 +545,16 @@ class Store:
         elif option == 2:
 
             print('''
+
+
+                                _                     _          _                              _ 
+             _                 | |                   | |        | |                            | |
+            | |_ _ _ _  ___ ___| | _   ____ ____   _ | | ____ _ | |    ___ _ _ _  ___   ____ _ | |
+            |  _) | | |/ _ (___) || \\ / _  |  _ \\ / || |/ _  ) || |   /___) | | |/ _ \\ / ___) || |
+            | |_| | | | |_| |  | | | ( ( | | | | ( (_| ( (/ ( (_| |  |___ | | | | |_| | |  ( (_| |
+             \\___)____|\\___/   |_| |_|\\_||_|_| |_|\\____|\\____)____|  (___/ \\____|\\___/|_|   \\____|
+                                                                                                  
+
                                                        _.gd8888888bp._
                                                     .g88888888888888888p.
                                                   .d8888P""       ""Y8888b.
@@ -638,6 +672,19 @@ class Store:
         elif option == 3:
 
             print('''
+
+
+                          ██████  ██▓███  ▓█████  ██▓     ██▓      ██████ 
+                        ▒██    ▒ ▓██░  ██▒▓█   ▀ ▓██▒    ▓██▒    ▒██    ▒ 
+                        ░ ▓██▄   ▓██░ ██▓▒▒███   ▒██░    ▒██░    ░ ▓██▄   
+                          ▒   ██▒▒██▄█▓▒ ▒▒▓█  ▄ ▒██░    ▒██░      ▒   ██▒
+                        ▒██████▒▒▒██▒ ░  ░░▒████▒░██████▒░██████▒▒██████▒▒
+                        ▒ ▒▓▒ ▒ ░▒▓▒░ ░  ░░░ ▒░ ░░ ▒░▓  ░░ ▒░▓  ░▒ ▒▓▒ ▒ ░
+                        ░ ░▒  ░ ░░▒ ░      ░ ░  ░░ ░ ▒  ░░ ░ ▒  ░░ ░▒  ░ ░
+                        ░  ░  ░  ░░          ░     ░ ░     ░ ░   ░  ░  ░  
+                              ░              ░  ░    ░  ░    ░  ░      ░  
+                                                                          
+
                                 .-~~~~~~~~~-._       _.-~~~~~~~~~-.
                             __.'              ~.   .~              `.__
                           .'//                  \\./                  \\`.
@@ -673,9 +720,34 @@ class Store:
                 if check == 1:
 
                     if buy == 1:
+                        if hero.souls >= soul_arrow.price:
+                            hero.learnSpell(soul_arrow)
+                            my_spells.append(soul_arrow)
+                            spells_list.remove(soul_arrow)
+                        else:
+                            print('-' * 55)
+                            print('Você não tem souls suficiente para comprar este item')
+                            print('Souls disponíveis: {}'.format(hero.souls))
+                            print('Preço do item: {}'.format(soul_arrow.price))
+                            store.weaponStore()
+
+                    elif buy == 2:
+                        if hero.souls >= great_soul_arrow.price:
+                            hero.learnSpell(great_soul_arrow)
+                            my_spells.append(great_soul_arrow)
+                            spells_list.remove(great_soul_arrow)
+                        else:
+                            print('-' * 55)
+                            print('Você não tem souls suficiente para comprar este item')
+                            print('Souls disponíveis: {}'.format(hero.souls))
+                            print('Preço do item: {}'.format(great_soul_arrow.price))
+                            store.weaponStore()
+
+                    elif buy == 3:
                         if hero.souls >= soul_spear.price:
                             hero.learnSpell(soul_spear)
                             my_spells.append(soul_spear)
+                            spells_list.remove(soul_spear)
                         else:
                             print('-' * 55)
                             print('Você não tem souls suficiente para comprar este item')
@@ -683,15 +755,16 @@ class Store:
                             print('Preço do item: {}'.format(soul_spear.price))
                             store.weaponStore()
 
-                    elif buy == 2:
-                        if hero.souls >= great_soul_spear.price:
-                            hero.learnSpell(great_soul_spear)
-                            my_spells.append(soul_spear)
+                    elif buy == 4:
+                        if hero.souls >= black_orb.price:
+                            hero.learnSpell(black_orb)
+                            my_spells.append(black_orb)
+                            spells_list.remove(black_orb)
                         else:
                             print('-' * 55)
                             print('Você não tem souls suficiente para comprar este item')
                             print('Souls disponíveis: {}'.format(hero.souls))
-                            print('Preço do item: {}'.format(great_soul_spear.price))
+                            print('Preço do item: {}'.format(black_orb.price))
                             store.weaponStore()
                     
                 else:
@@ -758,10 +831,17 @@ Escolha uma opção: """.format(hero.hp, hero.mp, hero.estus_flask)))
                 pass
             else:
                 if casting_code == 1:
-                    hero.cast_spells(enemy, soul_spear)
+                    hero.cast_spells(enemy, soul_arrow)
 
                 elif casting_code == 2:
-                    hero.cast_spells(enemy, great_soul_spear)
+                    hero.cast_spells(enemy, great_soul_arrow)
+
+                elif casting_code == 3:
+                    hero.cast_spells(enemy, soul_spear)
+
+                elif casting_code == 4:
+                    hero.cast_spells(enemy, black_orb)
+
 
         elif choice == 4:
             print('Você fugiu!')
@@ -770,18 +850,63 @@ Escolha uma opção: """.format(hero.hp, hero.mp, hero.estus_flask)))
         enemy.attack(hero)
 
         if hero.hp <= 0:
-            print('Você foi derrotado!')
             sleep(1)
             print('''
-      ,-=-.       ______     _
-     /  +  \\     />----->  _|D|_
-     | ~~~ |    // -/- /  |_ S _|
-     |R.I.P|   //  /  /     |S|
-\\vV,,|_____|V,//_____/VvV,v,|_|/,,vV/,
+
+   ___                      ___                 
+  / __| __ _  _ __   ___   / _ \\ __ __ ___  _ _ 
+ | (_ |/ _` || '  \\ / -_) | (_) |\\ V // -_)| '_|
+  \\___|\\__,_||_|_|_|\\___|  \\___/  \\_/ \\___||_|  
+                                                
+
+
+          ,-=-.       ______     _
+         /  +  \\     />----->  _|D|_
+         | ~~~ |    // -/- /  |_ S _|
+         |R.I.P|   //  /  /     |S|
+    \\vV,,|_____|V,//_____/VvV,v,|_|/,,vV/,
     ''')
             battle_result = False
 
             return battle_result
+
+
+def bonfire():
+    print('''
+
+  ___            __ _         
+ | _ ) ___ _ _  / _(_)_ _ ___ 
+ | _ \\/ _ \\ ' \\|  _| | '_/ -_)
+ |___/\\___/_||_|_| |_|_| \\___|
+                              
+
+       (                 
+        )            [ 01 ] PRÓXIMA FASE   
+       (  (              
+           )         [ 02 ] SUBIR DE NÍVEL   
+     (    (        
+      ) /\\ -(        [ 03 ] ACESSAR A LOJA
+    (  // | (`'   
+  _ -.;_/ \\--._      [ 04 ] HELP
+ (_;-// | \\ \\-'.\\   
+ ( `.__ _  ___,')      
+  `'(_ )_)(_)_)'
+
+        ''')
+
+    while True:
+        menu = int(input('Escolha uma opção: '))
+        if menu < 1 or menu > 5:
+            print('ERRO! Escolha uma opção válida!')
+        else:
+            break
+
+    if menu == 1:
+        pass
+
+    elif menu == 3:
+        store.weaponStore()
+
 
 
 
@@ -814,10 +939,12 @@ two_handed_greatsword = [flamberge, claymore, stone_greatsword, greatlord_greats
 #_________________|
 # name, magic_power, mp_cost
 #Sorceres
-soul_spear = Spells(1, 'Soul Spear', 25, 35, 25, 500)
-great_soul_spear = Spells(2, 'Great Soul Spear', 35, 45, 35, 1200)
+soul_arrow = Spells(1, 'Soul Arrow', 25, 35, 25, 500)
+great_soul_arrow = Spells(2, 'Great Soul Arrow', 35, 45, 35, 1200)
+soul_spear = Spells(3, 'Soul Spear', 45, 55, 40, 2000)
+black_orb = Spells(4, 'Black Orb', 55, 65, 50, 3000)
 #Lista dos objetos Spells que suprirá a loja
-spells_list = [soul_spear, great_soul_spear]
+spells_list = [soul_arrow, great_soul_arrow, soul_spear, black_orb]
 
 #-------------------------------------------------------------------------------------------
 #Objects: BOSSES  |
@@ -911,20 +1038,19 @@ print()
 sleep(3)
 '''
 
-print("""
+print('''
 
-      _____             _       _____             _     
-     |  __ \           | |     / ____|           | |    
-     | |  | | __ _ _ __| | __ | (___   ___  _   _| |___ 
-     | |  | |/ _` | '__| |/ /  \___ \ / _ \| | | | / __|
-     | |__| | (_| | |  |   <   ____) | (_) | |_| | \__ \
-
- 
-""")
+██████╗  █████╗ ██████╗ ██╗  ██╗    ███████╗ ██████╗ ██╗   ██╗██╗     ███████╗
+██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝    ██╔════╝██╔═══██╗██║   ██║██║     ██╔════╝
+██║  ██║███████║██████╔╝█████╔╝     ███████╗██║   ██║██║   ██║██║     ███████╗
+██║  ██║██╔══██║██╔══██╗██╔═██╗     ╚════██║██║   ██║██║   ██║██║     ╚════██║
+██████╔╝██║  ██║██║  ██║██║  ██╗    ███████║╚██████╔╝╚██████╔╝███████╗███████║
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝    ╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝
+                                                                              
+    ''')
 
 
 hero = Hero()
-
 store = Store(one_handed_swords, two_handed_greatsword, spells_list)
 
 #Escolher o nome do personagem
@@ -941,6 +1067,8 @@ battle_interface(asylum_demon)
 print('-=' * 20)
 if battle_result:
     print('Parabéns, você acaba de derrotar o Asylum Demon!')
+
+bonfire()
 
 
 
