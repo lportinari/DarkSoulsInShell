@@ -4,8 +4,8 @@ import math
 
 class Class:
     def __init__(self, name='', phyAttack=0, max_phy_attack=0, magAttack=0, max_mag_attack=0, 
-        phyDef=0, magDef=0, criticalChance=0, hp=0, mp=0, souls=0, level=0, weapom='', 
-        shield='', estus_flask=2, class_name=''):
+        phyDef=0, magDef=0, criticalChance=0, hp=0, mp=0, souls=0, level=1, weapom='', 
+        shield='', estus_flask=2, class_name='', xp=0):
         self.phyAttack = phyAttack
         self.magAttack = magAttack
         self.phyDef = phyDef
@@ -19,6 +19,7 @@ class Class:
         self.class_name = class_name
         self.max_phy_attack = max_phy_attack
         self.max_mag_attack = max_mag_attack
+        self.xp = xp
 
     def createCharacter(self):
         print('-' * 60)
@@ -64,7 +65,7 @@ class Class:
             hero.criticalChance = 5
             hero.hp = 110
             hero.mp = 50
-            hero.souls = 500
+            hero.souls = 3000
 
         #Classe Knight
         elif select == 2:
@@ -237,7 +238,7 @@ class Spells:
 
 class Monster:
     def __init__(self, name='', phyAttack=50, max_phy_attack=60, magAttack=65, max_mag_attack=75, 
-        phyDef=40, magDef=35, hp=500, mp=100, souls=500):
+        phyDef=40, magDef=35, hp=500, mp=100, souls=500, xp=500):
         self.name = name
         self.phyAttack = phyAttack
         self.max_phy_attack = max_phy_attack
@@ -248,6 +249,7 @@ class Monster:
         self.hp = hp
         self.mp = mp
         self.souls = souls
+        self.xp = xp
 
     def attack(self, other):
 
@@ -270,9 +272,9 @@ class Monster:
 
 class Hero(Class):
     def __init__(self, name='', phyAttack=1, max_phy_attack=1, magAttack=1, max_mag_attack=1, phyDef=1, magDef=1, criticalChance=1, 
-        hp=1, mp=1, souls=0, level=0, weapom='', shield='', estus_flask=2, class_name=''):
+        hp=1, mp=1, souls=0, level=0, weapom='', shield='', estus_flask=2, class_name='', xp=0):
         super(Hero, self).__init__(name, phyAttack, max_phy_attack, magAttack, max_mag_attack, phyDef, magDef, 
-            criticalChance, hp, mp, souls, level, weapom, shield, estus_flask, class_name)
+            criticalChance, hp, mp, souls, level, weapom, shield, estus_flask, class_name, xp)
         
     def createCharacter(self):
         super(Hero, self).createCharacter()
@@ -303,7 +305,8 @@ class Hero(Class):
                 print('ATAQUE CRÍTICO!')
             print('Você causou {} de dano no inimigo\n'.format(dano))
             print('Parabéns, você derrotou {}!'.format(other.name))
-            print('Você adquiriu {} souls'.format(other.souls))
+            print('Você adquiriu {} souls e {} pontos de xp!'.format(other.souls, other.xp))
+            hero.levelUp(other)
 
         else:
             print('{}:'.format(self.name))
@@ -349,7 +352,8 @@ class Hero(Class):
                 other.hp = 0
                 print('Você causou {} de dano no inimigo\n'.format(dano))
                 print('Parabéns, você derrotou {}!'.format(other.name))
-                print('Você adquiriu {} souls'.format(other.souls))
+                print('Você adquiriu {} souls e {} pontos de xp!'.format(other.souls, other.xp))
+                hero.levelUp(other)
 
             else:
                 print('{}:'.format(self.name))
@@ -368,20 +372,66 @@ class Hero(Class):
             return crit
 
 
-    def levelUp(self):
+    def levelUp(self, other):
+        global nextLevel, points
 
-        print('-=' * 30)
-        print('Para upar de level é necessário uma taxa de "Souls", a taxa aumenta a cada level adquirido.')
-        print('-=' * 30)
+        points = 0
+        self.xp += other.xp
+        nextLevel = 25
+
+        while self.xp >= nextLevel:
+            self.level += 1
+            points += 2
+            self.hp += 10
+            self.mp += 5
+            self.xp -= nextLevel
+            nextLevel = round(nextLevel * 1.5)
+
+        current_level = self.level
 
         print('''
----------------           --------------
-Level Up: {}  |           | Souls: {}  |   
----------------           --------------
+-------------------------
+Level: {}
+xp: {}
+Próximo level: {}
+-------------------------
+            '''.format(self.level, self.xp, nextLevel))
 
 
-            '''.format())
+    def setLevelPoints(self, points):
 
+        while points > 0:
+            print('''
+Você tem {} pontos para distribuir
+
+<*><*><*><*><*><*><*><*><*><*><*><*><*><*><*><*>                 
+[ 1 ]    Ataque Físico: {}/{}     --> {}/{}
+[ 2 ]    Ataque Mágico: {}/{}     --> {}/{}
+[ 3 ]    Defesa Física: {}        --> {}
+[ 4 ]    Defesa Mágica: {}        --> {}
+[ 5 ]    Chance Crítica: {}%      --> {}% 
+<*><*><*><*><*><*><*><*><*><*><*><*><*><*><*><*>
+                '''.format(points, self.phyAttack, self.max_phy_attack, self.phyAttack + 2, self.max_phy_attack + 2,
+                    self.magAttack, self.max_mag_attack, self.magAttack + 2, self.max_mag_attack + 2, self.phyDef, self.phyDef + 2, 
+                    self.magDef, self.magDef + 2, self.criticalChance, self.criticalChance + 0.5))
+
+            up = int(input('Escolha um atributo: '))
+
+            if up == 1:
+                self.phyAttack += 2
+                self.max_phy_attack += 2
+            elif up == 2:
+                self.magAttack += 2
+                self.max_mag_attack += 2
+            elif up == 3:
+                self.phyDef += 2
+            elif up == 4:
+                self.magDef += 2
+            elif up == 5:
+                self.criticalChance += 0.5
+
+            points -= 1
+        bonfire()
 
 
 class Store:
@@ -499,6 +549,8 @@ class Store:
                         if hero.souls >= broken_straight_sword.price:
                             hero.equipWeapon(broken_straight_sword)
                             my_weapons.append(broken_straight_sword)
+                            one_handed_swords.remove(broken_straight_sword)
+
                         else:
                             print('-' * 55)
                             print('Você não tem souls suficiente para comprar este item')
@@ -510,6 +562,7 @@ class Store:
                         if hero.souls >= straight_sword.price:
                             hero.equipWeapon(straight_sword)
                             my_weapons.append(straight_sword)
+                            one_handed_swords.remove(straight_sword)
                         else:
                             print('-' * 55)
                             print('Você não tem souls suficiente para comprar este item')
@@ -521,6 +574,8 @@ class Store:
                         if hero.souls >= bastard_sword.price:
                             hero.equipWeapon(bastard_sword)
                             my_weapons.append(bastard_sword)
+                            one_handed_swords.remove(bastard_sword)
+
                         else:
                             print('-' * 55)
                             print('Você não tem souls suficiente para comprar este item')
@@ -532,6 +587,7 @@ class Store:
                         if hero.souls >= straight_sword_hilt.price:
                             hero.equipWeapon(straight_sword_hilt)
                             my_weapons.append(straight_sword_hilt)
+                            one_handed_swords.remove(straight_sword_hilt)
                         else:
                             print('-' * 55)
                             print('Você não tem souls suficiente para comprar este item')
@@ -626,6 +682,7 @@ class Store:
                         if hero.souls >= flamberge.price:
                             hero.equipWeapon(flamberge)
                             my_weapons.append(flamberge)
+                            two_handed_greatsword.remove(flamberge)
                         else:
                             print('-' * 55)
                             print('Você não tem souls suficiente para comprar este item')
@@ -637,6 +694,7 @@ class Store:
                         if hero.souls >= claymore.price:
                             hero.equipWeapon(claymore)
                             my_weapons.append(claymore)
+                            two_handed_greatsword.remove(claymore)
                         else:
                             print('-' * 55)
                             print('Você não tem souls suficiente para comprar este item')
@@ -648,6 +706,7 @@ class Store:
                         if hero.souls >= stone_greatsword.price:
                             hero.equipWeapon(stone_greatsword)
                             my_weapons.append(stone_greatsword)
+                            two_handed_greatsword.remove(stone_greatsword)
                         else:
                             print('-' * 55)
                             print('Você não tem souls suficiente para comprar este item')
@@ -659,6 +718,7 @@ class Store:
                         if hero.souls >= greatlord_greatsword.price:
                             hero.equipWeapon(greatlord_greatsword)
                             my_weapons.append(greatlord_greatsword)
+                            two_handed_greatsword.remove(greatlord_greatsword)
                         else:
                             print('-' * 55)
                             print('Você não tem souls suficiente para comprar este item')
@@ -904,6 +964,9 @@ def bonfire():
     if menu == 1:
         pass
 
+    elif menu == 2:
+        hero.setLevelPoints(points)
+
     elif menu == 3:
         store.weaponStore()
 
@@ -916,7 +979,7 @@ def bonfire():
 
 #Swords:
 #ID, name='', phyAttack=0, max_phy_attack=0, magAttack=0, max_mag_attack=0, critical_chance=0, price=0)
-broken_straight_sword = Equips(1, 'Broken Straight Sword', 10, 15, 0, 0, 0, 200)
+broken_straight_sword = Equips(1, 'Broken Straight Sword', 200, 300, 0, 0, 0, 200)
 straight_sword = Equips(2, 'Straight Sword', 20, 25, 0, 0, 5, 500)
 bastard_sword = Equips(3, 'Bastard Sword', 30, 37, 0, 0, 5, 1500)
 straight_sword_hilt = Equips(4, 'Straight Sword Hilt', 40, 50, 0, 0, 10, 2000)
@@ -950,10 +1013,10 @@ spells_list = [soul_arrow, great_soul_arrow, soul_spear, black_orb]
 #Objects: BOSSES  |
 #_________________|
 #name='', phyAttack=50, max_phy_attack=60, magAttack=65, max_mag_attack=75, phyDef=40, 
-#magDef=35, hp=500, mp=100, souls=50
+#magDef=35, hp=500, mp=100, souls=50, xp
 
-asylum_demon = Monster('Asylum Demon', 25, 35, 0, 0, 15, 30, 300, 100, 500)
-bell_gargoyle = Monster('Bell Gargoyle', 30, 40, 25, 35, 35, 40, 500, 100, 750)
+asylum_demon = Monster('Asylum Demon', 25, 35, 0, 0, 15, 30, 300, 100, 500, 500)
+bell_gargoyle = Monster('Bell Gargoyle', 30, 40, 25, 35, 35, 40, 500, 100, 750, 1000)
 
 
 #-------------------------------------------------------------------------------------------
@@ -1059,16 +1122,21 @@ hero.createCharacter()
 #Escolher a classe do personagem
 hero.chooseClass()
 
-
 store.weaponStore()
+
 
 battle_interface(asylum_demon)
 
 print('-=' * 20)
 if battle_result:
-    print('Parabéns, você acaba de derrotar o Asylum Demon!')
+    print('Parabéns você derrotou o primeiro Boss')
 
 bonfire()
+
+battle_interface(bell_gargoyle)
+
+bonfire()
+
 
 
 
